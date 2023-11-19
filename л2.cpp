@@ -2,6 +2,7 @@
 #include <vector>
 #include <time.h>
 #include <algorithm>
+#include <map>
 
 using std::cout;
 using std::cin;
@@ -95,7 +96,7 @@ int output3(vector<std::string> vec, vector<int> marks) {
      else mediana = (marks[size / 2] + marks[size / 2 - 1]) / 2;
      return mediana;
  }
- int Moda(vector<int> marks, int size) {
+ /*int Moda(vector<int> marks, int size) {
      int number = marks[0];
      int moda = number;
      int count = 1;
@@ -114,6 +115,29 @@ int output3(vector<std::string> vec, vector<int> marks) {
      }
      if (moda == marks[0] and count == 1) return false;
      else return moda; 
+ }*/
+ vector<int> Mode(const std::vector<int>& arr) {
+     std::map<int, int> countMap;
+     vector<int> mode;
+
+     for (int num : arr) {
+         countMap[num]++;
+     }
+
+     int maxCount = 0;
+     for (const auto& pair : countMap) {
+         if (pair.second > maxCount) {
+             maxCount = pair.second;
+         }
+     }
+
+     for (const auto& pair : countMap) {
+         if (pair.second == maxCount) {
+             mode.push_back(pair.first);
+         }
+     }
+
+     return mode;
  }
 
 int main()
@@ -124,7 +148,7 @@ int main()
     vector<std::string> students1{ "Иван", "Анастасия", "Анна", "Екатерина", "Михаил", "Сергей", "Александр", "Татьяна", "Валерий", "Полина" },
                         students2(size),
                         students3(size);
-    vector<int> marks, marks1{ 74, 83, 99, 50, 80, 90, 70, 84, 100, 74 }, marks2(size), marks3(size);
+    vector<int> marks, marks1{ 74, 83, 99, 50, 70, 90, 70, 84, 100, 74 }, marks2(size), marks3(size);
 
     cout << "Введите:" << "\n" << "1. Если хотите демонстрационный анализ на дефолтных входных значениях" << "\n"
          << "2. Если хотите анализ на случайных входных значениях" << "\n"
@@ -176,8 +200,15 @@ int main()
 
     double average = Average(marks, size);
     double mediana = Mediana(marks, size);
-    int moda = Moda(marks, size);
+    vector<int> mode = Mode(marks);
     for (auto i : marks) cout << i << " ";
-    cout << "\n" << average << " " << mediana << " " << moda;
+    cout << "\n";
+    if (mode.size() == 0) cout << "Мода не найдена";
+    else {
+        cout << "Мода(ы): ";
+        for (int num : mode) {
+            cout << num << " ";
+        }
+    }
+    cout << "\nСреднее значение: " << average << "\tМедиана: " << mediana;
 }
-
